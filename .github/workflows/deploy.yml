@@ -1,0 +1,25 @@
+name: Deploy Bicep Template
+
+on:
+  push:
+    branches:
+      - main  # Or your preferred branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Bicep Template
+      run: |
+        az deployment sub create \
+          --location eastus \
+          --template-file main.bicep
